@@ -1,13 +1,36 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Grid, Divider, Segment, Input, Dimmer, Loader } from 'semantic-ui-react'
+import {
+  Dimmer,
+  Divider,
+  Dropdown,
+  Form,
+  Grid,
+  Input,
+  Loader,
+  Segment,
+} from 'semantic-ui-react'
 import _ from 'lodash'
 
 import { fetchSongs } from '_actions/songs'
-import logo from 'logo.svg'
 import ListSongs from 'components/ListSongs'
 import 'App.css'
+
+const options = [
+  {
+    text: 'Genre',
+    value: 'genre',
+  },
+  {
+    text: 'Price',
+    value: 'price',
+  },
+  {
+    text: 'Duration',
+    value: 'duration',
+  },
+]
 
 
 class CornerJob extends Component {
@@ -50,17 +73,40 @@ class CornerJob extends Component {
     })
   }
 
+  sortResults() {
+    let { results } = this.props.songs.data
+    return _.orderBy(results, ['price'],['asc']);
+  }
+
   render() {
     let { songs } = this.props
 
     return (
       <Grid container id='main-container' padded='vertically'>
         <Grid.Row>
-          <Input
-            loading={ songs.isFetching }
-            icon='user'
-            placeholder='Search...'
-            onChange={ (e,v) => this._search(e, {'name': 'search', 'value': v.value}) }/>
+          <Form>
+            <Form.Group widths='equal'>
+              <Form.Input
+                loading={ songs.isFetching }
+                icon='user'
+                placeholder='Search...'
+                onChange={ (e,v) => this._search(e, {'name': 'search', 'value': v.value}) }
+              />
+              <Form.Select
+                placeholder='Sort by'
+                fluid
+                selection
+                options={ options }
+                fluid
+                onChange={ (e,v) => this.sortResults(e, {'name': 'sortBy', 'value': v.value}) }
+              />
+            </Form.Group>
+            <Form.Button
+              onClick={ (e,v) => this._search(e, {'name': 'search', 'value': v.value}) }
+            >
+              Search
+            </Form.Button>
+          </Form>        
         </Grid.Row>
           <Divider />
           <Grid.Row columns={4}>

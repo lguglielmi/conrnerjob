@@ -34,6 +34,7 @@ const ListSongs = (props) => {
       <Grid.Column>
         <Modal
           dimmer='blurring'
+          onClose={ () => props.controls() }
           size='medium'
           trigger={
             <Card>
