@@ -9,7 +9,7 @@ export const fetchSongs = (value) => {
       type: 'FETCHING_SONGS',
     })
 
-    fetch(`https://itunes.apple.com/search?term=${value}`, settings)
+    fetch(`https://itunes.apple.com/search?term=${value}&media=music`, settings)
       .then(
         response => response.json(),
         err => {

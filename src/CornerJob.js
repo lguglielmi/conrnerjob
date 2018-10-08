@@ -12,6 +12,19 @@ import 'App.css'
 
 class CornerJob extends Component {
 
+  constructor(props) {
+    super(props)
+
+    this.state={
+      player: {
+        play: false,
+      }
+    }
+
+    this.controls = this.controls.bind(this)
+
+  }
+
   componentDidMount() {
     this.props.fetchSongs('')
   }
@@ -28,6 +41,15 @@ class CornerJob extends Component {
     }
   }
 
+  controls() {
+    let { play } = this.state.player
+    this.setState({
+      player:{
+        play: ! play,
+      }
+    })
+  }
+
   render() {
     let { songs } = this.props
 
@@ -41,12 +63,17 @@ class CornerJob extends Component {
             onChange={ (e,v) => this._search(e, {'name': 'search', 'value': v.value}) }/>
         </Grid.Row>
           <Divider />
-          <Grid.Row columns={3}>
+          <Grid.Row columns={4}>
             {
               ! _.isEmpty(songs.data) &&
               <ListSongs
                 data={ songs.data }
                 isLoading={ songs.isFetching }
+                controls={ this.controls }
+                isPlaying={ this.state.player.play }
+                nextSong={ this.state.nextSong }
+                prevSong={ this.state.prevSong }
+                actualSong={ this.state.actualSong }
               />
             }
           </Grid.Row>
