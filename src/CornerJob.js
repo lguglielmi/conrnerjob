@@ -17,8 +17,8 @@ import {
   Segment,
 } from 'semantic-ui-react'
 import _ from 'lodash'
-
 import ReactPlayer from 'react-player'
+
 import { fetchSongs } from '_actions/songs'
 import ListSongs from 'components/ListSongs'
 import 'App.css'
@@ -145,12 +145,13 @@ class CornerJob extends Component {
         open={ this.state.player.open }
         onClose={ () => this.setState({player:{open: false}}) }
       >
-        <Modal.Header>{ song.trackName }</Modal.Header>
+        <Modal.Header>Now playing: { song.trackName }</Modal.Header>
         <Modal.Content image>
             <Image size='huge' src={ song.artworkUrl100 } />
             <Modal.Description>
               <Header>Artist: { song.artistName }</Header>
               <Header as='h4'>Album: { song.collectionName }</Header>
+              <Header as='h4'>Gender: { song.primaryGenreName }</Header>
               <Header as='h5'>Price: { song.currency } { song.trackPrice }</Header>
               <Divider />
                 <Button.Group icon>
