@@ -1,7 +1,33 @@
-export const fetchSongs = (value) => {
+export const fetchSongs = (value, sort) => {
   let settings = {
     'async': true,
     'Method': 'GET',
+  },
+      type
+  debugger
+  if (sort) {
+    switch(sort){
+      case 'SORT_BY_PRICE_ASC':
+        type = 'SORT_BY_PRICE_ASC'
+      break
+      case 'SORT_BY_PRICE_DESC':
+        type = 'SORT_BY_PRICE_DESC'
+      break
+      case 'SORT_BY_GENRE_ASC':
+        type = 'SORT_BY_GENRE_ASC'
+      break
+      case 'SORT_BY_GENRE_DESC':
+        type = 'SORT_BY_GENRE_DESC'
+      break
+      case 'SORT_BY_DURATION_DESC':
+        type = 'SORT_BY_DURATION_DESC'
+      break
+      case 'SORT_BY_DURATION_ASC':
+        type = 'SORT_BY_DURATION_ASC'
+      break
+    }
+  } else {
+    type = 'FETCHED_SONGS'
   }
 
   return dispatch => new Promise((resolve, reject) => {
@@ -22,7 +48,7 @@ export const fetchSongs = (value) => {
       )
       .then(data => {
         dispatch({
-          type: 'FETCHED_SONGS',
+          type: type,
           data,
         })
         resolve(data)

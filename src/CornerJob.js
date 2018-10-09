@@ -20,16 +20,28 @@ import 'App.css'
 
 const options = [
   {
-    text: 'Genre',
-    value: 'genre',
+    text: 'Genre ASC',
+    value: 'SORT_BY_GENRE_ASC',
   },
   {
-    text: 'Price',
-    value: 'price',
+    text: 'Genre DESC',
+    value: 'SORT_BY_GENRE_DESC',
   },
   {
-    text: 'Duration',
-    value: 'duration',
+    text: 'Price asc',
+    value: 'SORT_BY_PRICE_ASC',
+  },
+  {
+    text: 'Price desc',
+    value: 'SORT_BY_PRICE_DESC',
+  },
+  {
+    text: 'Duration desc',
+    value: 'SORT_BY_DURATION_DESC',
+  },
+  {
+    text: 'Duration asc',
+    value: 'SORT_BY_DURATION_ASC',
   },
 ]
 
@@ -43,6 +55,9 @@ class CornerJob extends Component {
       player: {
         play: false,
         open: false,
+      },
+      search:{
+        value: ''
       }
     }
 
@@ -56,13 +71,19 @@ class CornerJob extends Component {
   }
 
   _search(e, {name, value}) {
+    this.setState({
+      search:{
+        value,
+      }
+    })
+
     if (this.timeOut) {
       clearTimeout(this.timeOut)
     }
 
     if (name==='search' && value.length >= 5) {
       this.timeOut = setTimeout( () => {
-        this.props.fetchSongs(value)
+        this.props.fetchSongs(value, false)
       }, 500)
     }
   }
@@ -122,9 +143,16 @@ class CornerJob extends Component {
   }
 
 
-  sortResults() {
-    let { results } = this.props.songs.data
-    return _.orderBy(results, ['price'],['asc']);
+  sortResults(e, {name, value}) {
+    let { search } = this.state
+    this.setState({
+      search:{
+        ...search,
+        [name]: value,
+      }
+    })
+    this.props.fetchSongs(search.value, value)
+
   }
 
   renderPlayerModal() {
@@ -136,6 +164,7 @@ class CornerJob extends Component {
         open={ this.state.player.open }
         onClose={ () => this.setState({player:{open: false}}) }
         size='large'
+        key={ `modal_${song.trackId}` }
       >
         <Modal.Header>Now playing: { song.trackName }</Modal.Header>
         <Modal.Content image>
@@ -191,7 +220,7 @@ class CornerJob extends Component {
       <Grid container id='main-container' padded='vertically'>
         <Grid.Row>
           <Form>
-            <Form.Group widths='equal'>
+            <Form.Group>
               <Form.Input
                 loading={ songs.isFetching }
                 icon='music'
@@ -204,6 +233,7 @@ class CornerJob extends Component {
                 options={ options }
                 fluid
                 onChange={ (e,v) => this.sortResults(e, {'name': 'sortBy', 'value': v.value}) }
+                disabled={ _.isEmpty(this.state.search.value) }
               />
             </Form.Group>
           </Form>        
