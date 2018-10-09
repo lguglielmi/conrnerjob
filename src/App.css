@@ -63,3 +63,7 @@
 .image.content img {
   height: 100% !important;
 }
+
+.SocialMediaShareButton {
+  display: inline-block;
+}

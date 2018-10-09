@@ -12,8 +12,22 @@ import {
   Button,
 } from 'semantic-ui-react'
 import _ from 'lodash'
-import ReactPlayer from 'react-player'
 
+import {
+  FacebookShareButton,
+  GooglePlusShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
+} from 'react-share'
+
+import {
+  FacebookIcon,
+  GooglePlusIcon,
+  LinkedinIcon,
+  TwitterIcon,
+} from 'react-share';
+
+import ReactPlayer from 'react-player'
 import { fetchSongs } from '_actions/songs'
 import ListSongs from 'components/ListSongs'
 import 'App.css'
@@ -157,7 +171,28 @@ class CornerJob extends Component {
 
   renderPlayerModal() {
     let { song } = this.state.player,
-        { results } = this.props.songs.data
+        { results } = this.props.songs.data,
+        socialButtons = () => (
+          <React.Fragment>
+            <TwitterShareButton
+              url={song.previewUrl}
+              title='estoy escuchando!'
+            >
+              <TwitterIcon
+                size={32}
+                round />
+            </TwitterShareButton>
+            <FacebookShareButton
+              url={song.previewUrl}
+              title='estoy escuchando!'
+            >
+              <FacebookIcon
+                size={32}
+                round />
+            </FacebookShareButton>
+          </React.Fragment>
+        )
+
     return (
       <Modal
         dimmer='blurring'
@@ -206,7 +241,12 @@ class CornerJob extends Component {
                 <ReactPlayer
                   url={ song.previewUrl }
                   playing={ this.state.player.play }
+                  width={ 0 }
+                  height={ 0 }
                 />
+                <Divider />
+                  <Header as='h3'>Enjoy & share!</Header>
+                { socialButtons() }
             </Modal.Description>
           </Modal.Content>
       </Modal>
