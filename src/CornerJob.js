@@ -72,27 +72,44 @@ class CornerJob extends Component {
     }
   }
 
-  controls() {
-    let { play } = this.state.player
-    this.setState({
-      player:{
-        ...this.state.player,
-        play: ! play,
-      }
-    })
-  }
-
-  nextSong(songId) {
-    let { open } = this.state.player,
+  controls(e, {name, value}) {
+    let { play } = this.state.player,
         { results } = this.props.songs.data,
-        index = _.findIndex(results, {trackId: songId})
+        index = _.findIndex(results, {trackId: value})
     debugger
-    this.setState({
-      player:{
-        ...this.state.player,
-        song: results[index+1],
-      }
-    })
+    switch(name) {
+      case 'next':
+        this.setState({
+          player:{
+            ...this.state.player,
+            song: results[index+1],
+          }
+        })
+      break;
+      case 'prev':
+        this.setState({
+          player:{
+            ...this.state.player,
+            song: results[index-1],
+          }
+        })
+      break;
+      case 'play':
+        this.setState({
+          player:{
+            ...this.state.player,
+            play: ! play,
+          }
+        })
+      break;
+      default:
+        this.setState({
+          player:{
+            ...this.state.player,
+            song: results[index],
+          }
+        })
+    }
   }
 
   toggleModalPlayer(songId) {
@@ -102,6 +119,7 @@ class CornerJob extends Component {
 
     this.setState({
       player:{
+        play: false,
         open: ! open,
         song: songToPlay,
       }
@@ -114,8 +132,13 @@ class CornerJob extends Component {
     return _.orderBy(results, ['price'],['asc']);
   }
 
+  test() {
+    debugger
+  }
+
   renderPlayerModal() {
-    let { song } = this.state.player
+    let { song } = this.state.player,
+        { results } = this.props.songs.data
     return (
       <Modal
         dimmer='blurring'
@@ -135,25 +158,31 @@ class CornerJob extends Component {
                     <Icon
                       name={ this.state.player.play ? 'stop' : 'play'}
                       onClick={ this.controls }
+                      onClick={ (e,v) => this.controls(e, { name: 'play', value: song.trackId} ) }
+
                     />
                   </Button>
-                  <Button>
-                    <Icon name='fast backward' />
+                  <Button
+                    disabled={ _.findIndex(results, {trackId: song.trackId}) == 0 ? true : false }
+                  >
+                    <Icon
+                      name='fast backward'
+                      onClick={ (e,v) => this.controls(e, { name: 'prev', value: song.trackId} ) }
+                    />
                   </Button>
                   <Button>
                     <Icon
                       name='pause'
-                      onClick={ this.controls }
                     />
                   </Button>
                   <Button>
                     <Icon
                       name='fast forward'
-                      onClick={ () => this.nextSong(song.trackId) }
+                      onClick={ (e,v) => this.controls(e, { name: 'next', value: song.trackId} ) }
                     />
                   </Button>
                 </Button.Group>
-                <ReactPlayer url={ song.previewUrl } playing={ this.state.player.play } />
+                <ReactPlayer url={ song.previewUrl } playing={ this.state.player.play } onReady={ () => this.test }/>
             </Modal.Description>
           </Modal.Content>
       </Modal>
