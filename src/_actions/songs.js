@@ -4,7 +4,6 @@ export const fetchSongs = (value, sort) => {
     'Method': 'GET',
   },
       type
-  debugger
   if (sort) {
     switch(sort){
       case 'SORT_BY_PRICE_ASC':

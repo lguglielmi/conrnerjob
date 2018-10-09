@@ -36,7 +36,6 @@ const songs = (
         data: data,
       }
     case 'SORT_BY_GENRE_ASC':
-      debugger
       data= {
         results: _.orderBy(action.data.results, ['primaryGenreName'],['asc'])
       }

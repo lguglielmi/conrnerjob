@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import {
   Divider,
   Form,
+  Segment,
   Grid,
   Image,
   Modal,
@@ -208,7 +209,13 @@ class CornerJob extends Component {
               <Header>Artist: { song.artistName }</Header>
               <Header as='h4'>Album: { song.collectionName }</Header>
               <Header as='h4'>Gender: { song.primaryGenreName }</Header>
-              <Header as='h5'>Price: { song.currency } { song.trackPrice }</Header>
+              <Segment circular style={{ 'width': '25px', 'height': '25px' }}>
+              <Header as='h5'>
+                Price:
+                <Header.Subheader>{ song.currency } { song.trackPrice }</Header.Subheader>
+                </Header>
+              </Segment>
+
               <Divider />
                 <Button.Group icon>
                   <Button>
@@ -257,40 +264,43 @@ class CornerJob extends Component {
     let { songs } = this.props
 
     return (
-      <Grid container id='main-container' padded='vertically'>
-        <Grid.Row>
-          <Form>
-            <Form.Group>
-              <Form.Input
-                loading={ songs.isFetching }
-                icon='music'
-                placeholder='Search...'
-                onChange={ (e,v) => this._search(e, {'name': 'search', 'value': v.value}) }
-              />
-              <Form.Select
-                placeholder='Sort by'
-                selection
-                options={ options }
-                fluid
-                onChange={ (e,v) => this.sortResults(e, {'name': 'sortBy', 'value': v.value}) }
-                disabled={ _.isEmpty(this.state.search.value) }
-              />
-            </Form.Group>
-          </Form>        
-        </Grid.Row>
-          <Divider />
-          <Grid.Row columns={4}>
-            {
-              ! _.isEmpty(songs.data) &&
-              <ListSongs
-                data={ songs.data }
-                isLoading={ songs.isFetching }
-                toggleVisibilityModalPlayer={ this.toggleVisibilityModalPlayer }
-              />
-            }
-            { ! _.isEmpty(this.state.player.song) ? this.renderPlayerModal() : null }
+      <React.Fragment>
+        <Segment inverted textAlign='center' color='green'>Find your music!</Segment>
+        <Grid container id='main-container' padded='vertically'>
+          <Grid.Row>
+            <Form>
+              <Form.Group>
+                <Form.Input
+                  loading={ songs.isFetching }
+                  icon='music'
+                  placeholder='Search...'
+                  onChange={ (e,v) => this._search(e, {'name': 'search', 'value': v.value}) }
+                />
+                <Form.Select
+                  placeholder='Sort by'
+                  selection
+                  options={ options }
+                  fluid
+                  onChange={ (e,v) => this.sortResults(e, {'name': 'sortBy', 'value': v.value}) }
+                  disabled={ _.isEmpty(this.state.search.value) }
+                />
+              </Form.Group>
+            </Form>
           </Grid.Row>
-      </Grid>
+            <Divider />
+            <Grid.Row columns={4}>
+              {
+                ! _.isEmpty(songs.data) &&
+                <ListSongs
+                  data={ songs.data }
+                  isLoading={ songs.isFetching }
+                  toggleVisibilityModalPlayer={ this.toggleVisibilityModalPlayer }
+                />
+              }
+              { ! _.isEmpty(this.state.player.song) ? this.renderPlayerModal() : null }
+            </Grid.Row>
+        </Grid>
+      </React.Fragment>
     )
   }
 }
