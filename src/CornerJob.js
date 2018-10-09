@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {
-  Dimmer,
   Divider,
-  Dropdown,
   Form,
   Grid,
   Image,
@@ -12,9 +10,6 @@ import {
   Header,
   Icon,
   Button,
-  Input,
-  Loader,
-  Segment,
 } from 'semantic-ui-react'
 import _ from 'lodash'
 import ReactPlayer from 'react-player'
@@ -155,13 +150,12 @@ class CornerJob extends Component {
                   <Button>
                     <Icon
                       name={ this.state.player.play ? 'stop' : 'play'}
-                      onClick={ this.controls }
                       onClick={ (e,v) => this.controls(e, { name: 'play', value: song.trackId }) }
 
                     />
                   </Button>
                   <Button
-                    disabled={ _.findIndex(results, {trackId: song.trackId}) == 0 ? true : false }
+                    disabled={ _.findIndex(results, {trackId: song.trackId}) === 0 ? true : false }
                   >
                     <Icon
                       name='fast backward'
