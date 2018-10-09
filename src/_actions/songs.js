@@ -24,6 +24,8 @@ export const fetchSongs = (value, sort) => {
       case 'SORT_BY_DURATION_ASC':
         type = 'SORT_BY_DURATION_ASC'
       break
+      default:
+        type = 'FETCHED_SONGS'
     }
   } else {
     type = 'FETCHED_SONGS'

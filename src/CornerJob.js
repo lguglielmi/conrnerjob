@@ -16,15 +16,11 @@ import _ from 'lodash'
 
 import {
   FacebookShareButton,
-  GooglePlusShareButton,
-  LinkedinShareButton,
   TwitterShareButton,
 } from 'react-share'
 
 import {
   FacebookIcon,
-  GooglePlusIcon,
-  LinkedinIcon,
   TwitterIcon,
 } from 'react-share';
 
