@@ -11,7 +11,7 @@ const ListSongs = (props) => {
         duration = moment.utc(song.trackTimeMillis).format('mm:s')
     return (
       <Grid.Column>
-        <Card onClick={ () => props.toggleModalPlayer(song.trackId) }>
+        <Card onClick={ () => props.toggleVisibilityModalPlayer(song.trackId) }>
           <Image src={ song.artworkUrl100 } size='huge' />
           <Card.Content>
             <Card.Header>{ song.trackName }</Card.Header>

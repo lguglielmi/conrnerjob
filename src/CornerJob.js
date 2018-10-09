@@ -52,7 +52,7 @@ class CornerJob extends Component {
     }
 
     this.controls = this.controls.bind(this)
-    this.toggleModalPlayer = this.toggleModalPlayer.bind(this)
+    this.toggleVisibilityModalPlayer = this.toggleVisibilityModalPlayer.bind(this)
 
   }
 
@@ -76,7 +76,7 @@ class CornerJob extends Component {
     let { play } = this.state.player,
         { results } = this.props.songs.data,
         index = _.findIndex(results, {trackId: value})
-    debugger
+
     switch(name) {
       case 'next':
         this.setState({
@@ -112,7 +112,7 @@ class CornerJob extends Component {
     }
   }
 
-  toggleModalPlayer(songId) {
+  toggleVisibilityModalPlayer(songId) {
     let { open } = this.state.player,
         { results } = this.props.songs.data,
         songToPlay = _.find(results, {trackId: songId})
@@ -132,10 +132,6 @@ class CornerJob extends Component {
     return _.orderBy(results, ['price'],['asc']);
   }
 
-  test() {
-    debugger
-  }
-
   renderPlayerModal() {
     let { song } = this.state.player,
         { results } = this.props.songs.data
@@ -144,10 +140,11 @@ class CornerJob extends Component {
         dimmer='blurring'
         open={ this.state.player.open }
         onClose={ () => this.setState({player:{open: false}}) }
+        size='large'
       >
         <Modal.Header>Now playing: { song.trackName }</Modal.Header>
         <Modal.Content image>
-            <Image size='huge' src={ song.artworkUrl100 } />
+            <Image size='big' src={ song.artworkUrl100 } />
             <Modal.Description>
               <Header>Artist: { song.artistName }</Header>
               <Header as='h4'>Album: { song.collectionName }</Header>
@@ -159,7 +156,7 @@ class CornerJob extends Component {
                     <Icon
                       name={ this.state.player.play ? 'stop' : 'play'}
                       onClick={ this.controls }
-                      onClick={ (e,v) => this.controls(e, { name: 'play', value: song.trackId} ) }
+                      onClick={ (e,v) => this.controls(e, { name: 'play', value: song.trackId }) }
 
                     />
                   </Button>
@@ -168,7 +165,7 @@ class CornerJob extends Component {
                   >
                     <Icon
                       name='fast backward'
-                      onClick={ (e,v) => this.controls(e, { name: 'prev', value: song.trackId} ) }
+                      onClick={ (e,v) => this.controls(e, { name: 'prev', value: song.trackId }) }
                     />
                   </Button>
                   <Button>
@@ -179,11 +176,14 @@ class CornerJob extends Component {
                   <Button>
                     <Icon
                       name='fast forward'
-                      onClick={ (e,v) => this.controls(e, { name: 'next', value: song.trackId} ) }
+                      onClick={ (e,v) => this.controls(e, { name: 'next', value: song.trackId }) }
                     />
                   </Button>
                 </Button.Group>
-                <ReactPlayer url={ song.previewUrl } playing={ this.state.player.play } onReady={ () => this.test }/>
+                <ReactPlayer
+                  url={ song.previewUrl }
+                  playing={ this.state.player.play }
+                />
             </Modal.Description>
           </Modal.Content>
       </Modal>
@@ -200,7 +200,7 @@ class CornerJob extends Component {
             <Form.Group widths='equal'>
               <Form.Input
                 loading={ songs.isFetching }
-                icon='user'
+                icon='music'
                 placeholder='Search...'
                 onChange={ (e,v) => this._search(e, {'name': 'search', 'value': v.value}) }
               />
@@ -221,7 +221,7 @@ class CornerJob extends Component {
               <ListSongs
                 data={ songs.data }
                 isLoading={ songs.isFetching }
-                toggleModalPlayer={ this.toggleModalPlayer }
+                toggleVisibilityModalPlayer={ this.toggleVisibilityModalPlayer }
               />
             }
             { ! _.isEmpty(this.state.player.song) ? this.renderPlayerModal() : null }
